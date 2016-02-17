@@ -7,10 +7,10 @@ VAGRANTFILE_API_VERSION = "2"
 VM_MEMORY = "1536"
 
 CLOUD_CONFIG_PATH = File.join(File.dirname(__FILE__), "user-data")
-$update_channel = "stable"
+$update_channel = "alpha"
 $image_version = "current"
 $shared_folders = {
-  "../" => "/vagrant",
+  "../../" => "/vagrant",
   "~/.ssh/" => "/vault/.ssh"
 }
 
@@ -33,6 +33,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provider :vmware_fusion do |v|
     v.vmx["memsize"] = VM_MEMORY
+    v.cpus = 2
   end
 
   config.vm.network :private_network, ip: "10.10.10.10", netmask: "255.255.255.0"
@@ -58,7 +59,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   install_docker_compose = "
     mkdir -p /opt/bin && \
-    curl --progress-bar -o /opt/bin/docker-compose -L https://github.com/docker/compose/releases/download/1.5.2/docker-compose-`uname -s`-`uname -m` && \
+    curl --progress-bar -o /opt/bin/docker-compose -L https://github.com/docker/compose/releases/download/1.6.0/docker-compose-`uname -s`-`uname -m` && \
     chmod +x /opt/bin/docker-compose
   "
 
